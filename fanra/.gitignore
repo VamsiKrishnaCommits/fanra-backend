@@ -1,0 +1,24 @@
+# created by virtualenv automatically
+.vscode/
+.idea/
+.DS_Store
+
+venv/
+
+.env.development
+
+**/*__pycache__
+logs/
+/static/
+
+volumes/
+
+.docker-compose.yml
+env.development
+geoip-dbs/*.mmdb
+.coverage
+.coverage.*
+*.lcov
+fanra/bin/*
+fanra/lib/*
+
