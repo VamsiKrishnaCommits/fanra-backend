@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: web
+    image: 795127663042.dkr.ecr.ap-south-1.amazonaws.com/fanra_image:latest
+    command: gunicorn fanra.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app/
+    expose:
+      - 8000
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
