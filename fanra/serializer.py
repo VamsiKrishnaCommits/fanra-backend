@@ -6,4 +6,4 @@ class PersonSerialzer(ModelSerializer):
     class Meta:
         model = Person
 
-        fields = ("id", "name", "ref", "image")
+        fields = ("id", "name", "image")
