@@ -3,7 +3,7 @@ from fanra.models import *
 import wikipedia
 import requests
 import json
-
+from fanra.djikstra import find_shortest_relation_with_person
 WIKI_REQUEST = "http://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles="
 
 
@@ -110,25 +110,21 @@ def find_disconnected():
 def populate(person1: str, person2: str):
     person1 = Person.objects.get(id=person1)
     person2 = Person.objects.get(id=person2)
-    path = find_route_custom(person1, person2)
-    link = []
-    for i in path:
-        if len(i) > 1:
-            link.append(i[1])
-        link.append(i[0].name)
-
+    path = find_shortest_relation_with_person(person1, person2)
     nodes= []
     edges=[]
-    for i in range(0,len(link)):
-        if i%2==0:
-            nodes.append({'id':i , 'label':link[i] , 'color':'blue'})
-        else:
-            nodes.append({'id':i , 'label':link[i] , 'color':'green'})
+    counter= 0
+    for i in range(1,len(path)):
+        
+        nodes.append({'id':counter , 'label':path[i][0].name , 'color':'blue'})
+        counter=counter+1
+        if  path[i][1]:
+            nodes.append({'id':counter , 'label':path[i][1].name , 'color':'green'})
+            counter=counter+1
+            edges.append({'from':counter-2, 'to':counter-1, 'label':''})
+            edges.append({'from':counter-1 , 'to': counter , 'label':'' })
 
     
-    for i in range(1,len(link)):
-            edges.append({'from':(i-1) , 'to':(i) , 'label':link[i]})
-
     return nodes , edges
 
 
