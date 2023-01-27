@@ -1,6 +1,7 @@
 from requests import Request, Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from fanra.djikstra import build_graph
 from fanra.models import Person
 from fanra.serializer import PersonSerialzer
 from fanra.relations import populate
@@ -34,3 +35,9 @@ class FetchRelationShip(GenericViewSet):
         nodes , edges = populate(person1=celeb1, person2=celeb2 )
         response = {'nodes':nodes , 'edges':edges}
         return JsonResponse(response)
+
+
+class Fetchbuild(GenericViewSet):
+    def retrieve(self, request: Request):
+        build_graph()
+        return JsonResponse({})
