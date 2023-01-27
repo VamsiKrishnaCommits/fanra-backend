@@ -39,5 +39,5 @@ class FetchRelationShip(GenericViewSet):
 
 class Fetchbuild(GenericViewSet):
     def retrieve(self, request: Request):
-        build_graph()
+        build_graph(force=True)
         return JsonResponse({})
