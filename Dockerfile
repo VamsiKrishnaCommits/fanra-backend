@@ -14,3 +14,5 @@ ENV PYTHONUNBUFFERED 1
 
 # copy project
 COPY . .
+
+RUN python manage.py build_graph
