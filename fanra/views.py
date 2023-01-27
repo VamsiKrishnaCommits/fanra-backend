@@ -41,3 +41,7 @@ class Fetchbuild(GenericViewSet):
     def retrieve(self, request: Request):
         build_graph(force=True)
         return JsonResponse({})
+
+class HealthCheck(GenericViewSet):
+    def retrieve(self , request :Request):
+        return JsonResponse({})

@@ -18,14 +18,16 @@ from django.urls import path
 from fanra.views import FetchRelationShip
 
 from fanra.views import FetchCelebs
-from fanra.views import Fetchbuild
+from fanra.views import Fetchbuild , HealthCheck
 fetch_celebs = FetchCelebs.as_view({"get": "list"})
 fetch_relation = FetchRelationShip.as_view({'get':'retrieve'})
 test_build_graph=Fetchbuild.as_view({'get':'retrieve'})
+health_check = HealthCheck.as_view({'get':'retrieve'})
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/fetch", fetch_celebs),
     path('api/v1/fetch_relation' , fetch_relation),
-    path('api/v1/build_graph' , test_build_graph)
+    path('api/v1/build_graph' , test_build_graph),
+    path('api/v1/health' , health_check)
 
 ]
