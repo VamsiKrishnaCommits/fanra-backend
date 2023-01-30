@@ -1,13 +1,13 @@
 from collections import defaultdict
+import json
 import sys
 import functools
 from queue import Queue
 
-from fanra.models import Relation
+from fanra.models import Relation,Person
 
 import pickle
 import os
-
 
 
 def find_shortest_relation_with_person(start_person, end_person):
@@ -23,7 +23,7 @@ def find_shortest_relation_with_person(start_person, end_person):
         current_person, path = q.get()
         if current_person == end_person:
             return [(start_person, None)] + path + [(end_person, None)]
-        for neighbor, relation in graph[current_person]:
+        for neighbor, relation in graph.get(current_person, []):
             if neighbor not in visited:
                 visited.add(neighbor)
                 new_path = path + [(current_person, relation)]
@@ -32,34 +32,42 @@ def find_shortest_relation_with_person(start_person, end_person):
     return None
 
 
+
+
+
 @functools.lru_cache()
 def build_graph(force:bool = False):
-    '''
-    To be called with force set to True when you have relations and persons added 
+    """
+    To be called with force set to True when you have relations and persons added
     to the database and generate new graph altogether. Usually done by sshing into
     the pod.
 
     It defaults to reading from the file and returning a dictionary
 
     Make sure the file is always updated before pushing it to the production
-    '''
-    if not force :
-        return read_graph_from_disk('graph.pickle')
+    """
+    if not force:
+        return read_graph_from_disk('graph.json')
 
     graph = defaultdict(list)
     relations = Relation.objects.all()
     for relation in relations:
-        graph[relation.person1].append((relation.person2, relation.relation))
-    write_graph_to_disk('graph.pickle', graph)
+        graph[relation.person1_id].append((relation.person2_id, relation.relation_id))
+
+    write_graph_to_disk('graph.json', graph)
     return graph
 
-def write_graph_to_disk(file_name , graph):
-
-    with open(file_name, "wb") as f:
-        pickle.dump(graph, f)
+def write_graph_to_disk(file_name, graph):
+    with open(file_name, "w") as f:
+        json.dump(graph, f)
 
 def read_graph_from_disk(file_name):
+    if not os.path.exists(file_name):
+        return defaultdict(list)
 
-    with open(file_name, "rb") as f:
-        graph = pickle.load(f)
+    with open(file_name, "r") as f:
+        graph = json.load(f)
     return graph
+
+
+

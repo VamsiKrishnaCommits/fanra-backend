@@ -5,5 +5,5 @@ class Command(BaseCommand):
     help = "Rebuild the graph data structure"
 
     def handle(self, *args, **options):
-        build_graph()
+        build_graph(force=True )
         self.stdout.write(self.style.SUCCESS("Graph rebuilt successfully!"))

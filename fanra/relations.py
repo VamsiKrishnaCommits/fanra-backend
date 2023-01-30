@@ -108,9 +108,11 @@ def find_disconnected():
 
 
 def populate(person1: str, person2: str):
-    person1 = Person.objects.get(id=person1)
-    person2 = Person.objects.get(id=person2)
     path = find_shortest_relation_with_person(person1, person2)
+    mod_path=[]
+    for i in path:
+        mod_path.append((Person.objects.get(id=i[0]) , Movie.objects.get(id=i[1]) if i[1] else None))
+    path= mod_path
     nodes= []
     edges=[]
     counter= 0
