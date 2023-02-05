@@ -116,12 +116,12 @@ def populate(person1: str, person2: str):
     nodes= []
     edges=[]
     counter= 0
+    
     for i in range(1,len(path)):
-        
-        nodes.append({'id':counter , 'label':path[i][0].name , 'color':'blue'})
+        nodes.append({'id':counter , 'label':path[i][0].name , 'color':'blue' , 'ref':path[i][0].id})
         counter=counter+1
         if  path[i][1]:
-            nodes.append({'id':counter , 'label':path[i][1].name , 'color':'green'})
+            nodes.append({'id':counter , 'label':path[i][1].name , 'color':'green' , 'ref':path[i][1].id})
             counter=counter+1
             edges.append({'from':counter-2, 'to':counter-1, 'label':''})
             edges.append({'from':counter-1 , 'to': counter , 'label':'' })
