@@ -2,7 +2,7 @@ from requests import Request, Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from fanra.djikstra import build_graph
-from fanra.models import Person
+from fanra.models import Person,Query
 from fanra.serializer import PersonSerialzer
 from fanra.relations import populate
 from rest_framework.filters import SearchFilter
@@ -32,6 +32,7 @@ class FetchRelationShip(GenericViewSet):
     def retrieve(self, request: Request):
         celeb1 = request.GET['celeb1']
         celeb2 = request.GET['celeb2']
+        Query.objects.create(celeb1=celeb1 , celeb2=celeb2)
         nodes , edges = populate(person1=celeb1, person2=celeb2 )
         response = {'nodes':nodes , 'edges':edges}
         return JsonResponse(response)

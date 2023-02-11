@@ -27,3 +27,6 @@ class Relation(models.Model):
     relation = models.ForeignKey(to=Movie, on_delete=models.CASCADE)
 
 
+class Query(models.Model):
+    celeb1= models.CharField(max_length=255)
+    celeb2=models.CharField(max_length=255)
